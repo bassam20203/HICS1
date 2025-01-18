@@ -1,14 +1,15 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-
-const app = express();
-const port = 5000;
-
-
 const cors = require("cors");
+const app = express();
+const port = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+}));
 app.use(express.json());
 
 app.post("/update-student", (req, res) => {
@@ -126,5 +127,6 @@ app.post("/get-result", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
+
