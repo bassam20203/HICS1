@@ -15,7 +15,7 @@ app.post("/update-student", (req, res) => {
     return res.status(400).json({ message: "البيانات غير مكتملة" });
   }
 
-  const filePath = path.join(__dirname, "JSON", ${stage}.json);
+  const filePath = path.join(__dirname, "JSON",` ${stage}.json`);
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) return res.status(500).json({ message: "خطأ في قراءة الملف" });
 
