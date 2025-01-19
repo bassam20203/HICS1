@@ -5,9 +5,14 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin:"http://localhost:3000",
+  methods:['GET','POST'],
+  credentials:true
+}));
 app.use(express.json());
-
+app.options('*',cors())
 app.post("/update-student", (req, res) => {
   const { stage, rollNumber, updatedStudent } = req.body;
 
