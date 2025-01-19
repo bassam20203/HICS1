@@ -5,21 +5,19 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST"],
-}));
 app.use(express.json());
 
+// POST route لتحديث بيانات الطالب
 app.post("/update-student", (req, res) => {
   const { stage, rollNumber, updatedStudent } = req.body;
 
-  if (!stage || !rollNumber || !updatedStudent) {
+  if (!stage  !rollNumber  !updatedStudent) {
     return res.status(400).json({ message: "البيانات غير مكتملة" });
   }
 
-  const filePath = path.join(__dirname, "JSON", `${stage}.json`);
+  const filePath = path.join(__dirname, "JSON", ${stage}.json);
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) return res.status(500).json({ message: "خطأ في قراءة الملف" });
 
@@ -57,6 +55,7 @@ app.post("/update-student", (req, res) => {
   });
 });
 
+// GET route لجلب محتوى ملف JSON
 app.get("/get-file", (req, res) => {
   const { stage } = req.query;
 
@@ -64,13 +63,14 @@ app.get("/get-file", (req, res) => {
     return res.status(400).json({ message: "المرحلة غير محددة" });
   }
 
-  const filePath = path.join(__dirname, "..", "json-edit-server", "JSON", `${stage}.json`);
+  const filePath = path.join(__dirname, "..", "json-edit-server", "JSON", ${stage}.json);
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) return res.status(500).json({ message: "خطأ في قراءة الملف" });
     res.json({ content: data });
   });
 });
 
+// POST route لحفظ ملف JSON
 app.post("/save-file", (req, res) => {
   const { stage, content } = req.body;
 
@@ -84,20 +84,22 @@ app.post("/save-file", (req, res) => {
     return res.status(400).json({ message: "تنسيق JSON غير صحيح" });
   }
 
-  const filePath = path.join(__dirname, "..", "json-edit-server", "JSON", `${stage}.json`);
+  const filePath = path.join(__dirname, "..", "json-edit-server", "JSON", ${stage}.json);
   fs.writeFile(filePath, content, "utf8", (err) => {
     if (err) return res.status(500).json({ message: "خطأ في حفظ الملف" });
     res.json({ message: "تم حفظ الملف بنجاح" });
   });
 });
-app.post("/get-result", (req, res) => {
-  const { stage, rollNumber } = req.body;
+
+// GET route للبحث عن طالب
+app.get("/get-result", (req, res) => {
+  const { stage, rollNumber } = req.query; // استخدام req.query بدلاً من req.body
 
   if (!stage || !rollNumber) {
     return res.status(400).json({ message: "البيانات غير مكتملة" });
   }
 
-  const filePath = path.join(__dirname, "JSON", `${stage}.json`);
+  const filePath = path.join(__dirname, "JSON", ${stage}.json);
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
       return res.status(500).json({ message: "خطأ في قراءة الملف" });
@@ -126,7 +128,7 @@ app.post("/get-result", (req, res) => {
   });
 });
 
+// تشغيل الخادم
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(Server is running on port ${port});
 });
-
