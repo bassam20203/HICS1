@@ -1,11 +1,10 @@
 const express = require("express");
-const fs = require("fs").promises; // استخدام الـ Promises بدلاً من Callbacks
+const fs = require("fs").promises; 
 const path = require("path");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// CORS Configuration
 app.use(cors({
   origin: "http://localhost:3000",
   methods: ['GET', 'POST'],
@@ -14,9 +13,13 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers','*');
+  next();
+});
 
-
-// POST route لتحديث بيانات الطالب
 app.post("/update-student", async (req, res) => {
   const { stage, rollNumber, updatedStudent } = req.body;
 
@@ -56,7 +59,6 @@ app.post("/update-student", async (req, res) => {
   }
 });
 
-// GET route لقراءة ملف JSON
 app.get("/get-file", async (req, res) => {
   const { stage } = req.query;
 
@@ -74,7 +76,6 @@ app.get("/get-file", async (req, res) => {
   }
 });
 
-// POST route لحفظ ملف JSON
 app.post("/save-file", async (req, res) => {
   const { stage, content } = req.body;
 
@@ -83,7 +84,7 @@ app.post("/save-file", async (req, res) => {
   }
 
   try {
-    JSON.parse(content); // التحقق من صحة تنسيق JSON
+    JSON.parse(content);
   } catch (error) {
     return res.status(400).json({ message: "تنسيق JSON غير صحيح" });
   }
@@ -98,7 +99,6 @@ app.post("/save-file", async (req, res) => {
   }
 });
 
-// GET route للبحث عن طالب
 app.get("/get-result", async (req, res) => {
   const { stage, rollNumber } = req.query;
 
@@ -130,7 +130,6 @@ app.get("/get-result", async (req, res) => {
   }
 });
 
-// تشغيل الخادم
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
